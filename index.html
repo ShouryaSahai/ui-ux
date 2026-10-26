@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shourya Sahai // Bento Command Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-deep: #07070b;
+      --surface-1: #101118;
+      --surface-2: #161822;
+      --surface-3: #1e202e;
+      --border-subtle: rgba(255, 255, 255, 0.07);
+      --border-highlight: rgba(164, 145, 255, 0.35);
+      --text-main: #f3f4f8;
+      --text-muted: #8b8fa3;
+      --accent-purple: #9288ff;
+      --accent-coral: #ee9382;
+      --accent-green: #34d399;
+      --accent-cyan: #38bdf8;
+      --gradient-brand: linear-gradient(135deg, var(--accent-purple) 0%, #c48present 50%, var(--accent-coral) 100%);
+      --radius-tile: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-deep);
+      background-image: 
+        radial-gradient(circle at 15% 10%, rgba(146, 136, 255, 0.08), transparent 35%),
+        radial-gradient(circle at 85% 85%, rgba(238, 147, 130, 0.07), transparent 35%);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      padding: 28px 20px 48px;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Top Bar */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding: 0 6px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-purple), var(--accent-coral));
+      box-shadow: 0 0 12px var(--accent-purple);
+    }
+
+    .style-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      background: var(--surface-1);
+      border: 1px solid var(--border-subtle);
+      padding: 6px 14px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .style-badge span {
+      background: linear-gradient(90deg, var(--accent-purple), var(--accent-coral));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 600;
+    }
+
+    /* BENTO GRID ARCHITECTURE */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-rows: minmax(195px, auto);
+      gap: 16px;
+    }
+
+    /* Grid Spans */
+    .col-span-1 { grid-column: span 1; }
+    .col-span-2 { grid-column: span 2; }
+    .col-span-3 { grid-column: span 3; }
+    .row-span-1 { grid-row: span 1; }
+    .row-span-2 { grid-row: span 2; }
+
+    /* Dark Surface Tile Styling */
+    .tile {
+      position: relative;
+      background: linear-gradient(165deg, var(--surface-2) 0%, var(--surface-1) 100%);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-tile);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.28s ease, box-shadow 0.28s ease;
+    }
+
+    /* Interactive Spotlight Hover Effect */
+    .tile::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius-tile);
+      background: radial-gradient(
+        500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(146, 136, 255, 0.11),
+        transparent 40%
+      );
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .tile:hover {
+      transform: translateY(-3px);
+      border-color: rgba(146, 136, 255, 0.28);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+    }
+
+    .tile:hover::before {
+      opacity: 1;
+    }
+
+    .tile-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    /* TILE 1: HERO PROFILE (2x2) */
+    .hero-tile {
+      background: 
+        radial-gradient(circle at 90% 10%, rgba(238, 147, 130, 0.16), transparent 45%),
+        radial-gradient(circle at 10% 90%, rgba(146, 136, 255, 0.18), transparent 50%),
+        linear-gradient(165deg, #171824 0%, #0e0f17 100%);
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(52, 211, 153, 0.1);
+      border: 1px solid rgba(52, 211, 153, 0.25);
+      color: var(--accent-green);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 999px;
+      width: fit-content;
+    }
+
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--accent-green);
+      border-radius: 50%;
+      box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7); }
+      70% { box-shadow: 0 0 0 8px rgba(52, 211, 153, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+    }
+
+    .hero-title {
+      font-size: clamp(2rem, 3.2vw, 2.85rem);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.08;
+      margin: 18px 0 14px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(95deg, #988eff 0%, #d48fff 45%, #f09582 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-sub {
+      color: var(--text-muted);
+      font-size: 0.96rem;
+      max-width: 92%;
+      margin-bottom: 22px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 0.85rem;
+      padding: 10px 18px;
+      border-radius: 12px;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-purple), var(--accent-coral));
+      color: #09090d;
+      box-shadow: 0 4px 20px rgba(146, 136, 255, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: scale(1.03);
+      box-shadow: 0 6px 25px rgba(238, 147, 130, 0.45);
+    }
+
+    .btn-ghost {
+      background: var(--surface-3);
+      color: var(--text-main);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* TILE 2: LOCAL AI TELEMETRY (1x1) */
+    .metric-big {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 2.1rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .metric-unit {
+      font-size: 0.8rem;
+      color: var(--accent-purple);
+      font-weight: 500;
+    }
+
+    .sparkline {
+      display: flex;
+      align-items: flex-end;
+      gap: 5px;
+      height: 42px;
+      margin-top: 12px;
+    }
+
+    .spark-bar {
+      flex: 1;
+      background: linear-gradient(to top, rgba(146, 136, 255, 0.2), var(--accent-purple));
+      border-radius: 4px;
+      transition: height 0.4s ease;
+    }
+
+    /* TILE 3: LOCATION & IST CLOCK (1x1) */
+    .clock-display {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.85rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin: 4px 0;
+    }
+
+    .coords {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent-coral);
+      background: rgba(238, 147, 130, 0.1);
+      padding: 4px 10px;
+      border-radius: 8px;
+      width: fit-content;
+    }
+
+    /* TILE 4: INTERACTIVE CLI TERMINAL (2x1) */
+    .terminal-tile {
+      background: #0a0b10;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 18px 20px;
+    }
+
+    .term-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: 10px;
+    }
+
+    .window-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .window-dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .dot-r { background: #ff5f56; }
+    .dot-y { background: #ffbd2e; }
+    .dot-g { background: #27c93f; }
+
+    .term-body {
+      font-size: 0.8rem;
+      height: 92px;
+      overflow-y: auto;
+      color: #c5c9d6;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .term-line .prompt {
+      color: var(--accent-purple);
+      margin-right: 8px;
+    }
+
+    .term-input-row {
+      display: flex;
+      align-items: center;
+      margin-top: 6px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.08);
+      padding-top: 8px;
+    }
+
+    .term-input {
+      background: transparent;
+      border: none;
+      color: var(--accent-green);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      width: 100%;
+      outline: none;
+    }
+
+    /* TILE 5: STACK MATRIX (1x2) */
+    .stack-list {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      margin-top: 8px;
+    }
+
+    .stack-item {
+      background: var(--surface-3);
+      border: 1px solid var(--border-subtle);
+      padding: 10px 13px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.84rem;
+      font-weight: 500;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .stack-item:hover {
+      transform: translateX(4px);
+      border-color: var(--accent-purple);
+    }
+
+    .stack-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: rgba(146, 136, 255, 0.14);
+      color: var(--accent-purple);
+    }
+
+    /* TILE 6: FEATURED PROJECTS SWITCHER (2x1) */
+    .project-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .proj-tab {
+      background: var(--surface-3);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .proj-tab.active {
+      background: rgba(146, 136, 255, 0.18);
+      color: var(--text-main);
+      border-color: var(--accent-purple);
+    }
+
+    .proj-content h3 {
+      font-size: 1.15rem;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .proj-content p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* TILE 7: AMBIENT SYNTH PAD (1x1) */
+    .synth-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .synth-pad {
+      background: var(--surface-3);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 12px 8px;
+      text-align: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--text-main);
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s ease;
+    }
+
+    .synth-pad:active, .synth-pad.playing {
+      background: linear-gradient(135deg, var(--accent-purple), var(--accent-coral));
+      color: #07070b;
+      font-weight: 700;
+      transform: scale(0.95);
+      box-shadow: 0 0 18px rgba(146, 136, 255, 0.5);
+    }
+
+    /* Responsive Breakpoints */
+    @media (max-width: 1024px) {
+      .bento-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .bento-grid {
+        grid-template-columns: 1fr;
+      }
+      .col-span-2, .col-span-3 {
+        grid-column: span 1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="brand-dot"></div>
+        <span>SHOURYA.OS // BENTO</span>
+      </div>
+      <div class="style-badge">
+        Style Roulette: <span>Bento + Dark Mode</span>
+      </div>
+    </header>
+
+    <!-- MAIN BENTO GRID -->
+    <main class="bento-grid" id="bentoGrid">
+
+      <!-- TILE 1: HERO (Span 2x2) -->
+      <section class="tile hero-tile col-span-2 row-span-2">
+        <div>
+          <div class="status-pill">
+            <span class="pulse-dot"></span>
+            CS &amp; AI Undergrad • Building Fast
+          </div>
+          <h1 class="hero-title">
+            Shourya Sahai.<br />
+            <span class="gradient-text">Bento + Dark Mode.</span>
+          </h1>
+          <p class="hero-sub">
+            Full-stack prototyping, local LLM orchestration, and interactive systems. Engineered with CSS Grid spans and tactile dark surfaces.
+          </p>
+        </div>
+        <div class="hero-actions">
+          <button class="btn btn-primary" id="shuffleGlowBtn">⚡ Pulse Grid</button>
+          <button class="btn btn-ghost" onclick="runTerminalCmd('projects')">Explore Builds →</button>
+        </div>
+      </section>
+
+      <!-- TILE 2: LOCAL LLM INFERENCE (Span 1x1) -->
+      <section class="tile col-span-1 row-span-1">
+        <div class="tile-label">
+          <span>LOCAL INFERENCE</span>
+          <span style="color: var(--accent-green)">● OLLAMA</span>
+        </div>
+        <div>
+          <div class="metric-big">
+            <span id="tpsCounter">64.8</span>
+            <span class="metric-unit">tok/s</span>
+          </div>
+          <div style="font-size: 0.76rem; color: var(--text-muted);">llama.cpp • 4-bit quantization</div>
+        </div>
+        <div class="sparkline" id="sparkline">
+          <div class="spark-bar" style="height: 45%"></div>
+          <div class="spark-bar" style="height: 70%"></div>
+          <div class="spark-bar" style="height: 55%"></div>
+          <div class="spark-bar" style="height: 90%"></div>
+          <div class="spark-bar" style="height: 65%"></div>
+          <div class="spark-bar" style="height: 80%"></div>
+          <div class="spark-bar" style="height: 95%"></div>
+          <div class="spark-bar" style="height: 75%"></div>
+        </div>
+      </section>
+
+      <!-- TILE 3: BASE OF OPERATIONS / CLOCK (Span 1x1) -->
+      <section class="tile col-span-1 row-span-1">
+        <div class="tile-label">
+          <span>BASE STATION</span>
+          <span>IST (UTC+5:30)</span>
+        </div>
+        <div>
+          <div style="font-size: 0.9rem; font-weight: 600;">Pune, India</div>
+          <div class="clock-display" id="liveClock">14:55:00</div>
+        </div>
+        <div class="coords">18.5204° N, 73.8567° E</div>
+      </section>
+
+      <!-- TILE 4: TECH STACK (Span 1x2) -->
+      <section class="tile col-span-1 row-span-2">
+        <div class="tile-label">
+          <span>CORE ARSENAL</span>
+          <span>06 NODES</span>
+        </div>
+        <div class="stack-list">
+          <div class="stack-item">
+            <span>TypeScript / Node</span>
+            <span class="stack-tag">Full-Stack</span>
+          </div>
+          <div class="stack-item">
+            <span>Python &amp; AI Agents</span>
+            <span class="stack-tag">LLM / RAG</span>
+          </div>
+          <div class="stack-item">
+            <span>PostgreSQL + Drizzle</span>
+            <span class="stack-tag">Data ORM</span>
+          </div>
+          <div class="stack-item">
+            <span>Godot Engine</span>
+            <span class="stack-tag">GDScript</span>
+          </div>
+          <div class="stack-item">
+            <span>Linux CLI &amp; Git</span>
+            <span class="stack-tag">SysAdmin</span>
+          </div>
+          <div class="stack-item">
+            <span>CSS Grid Architecture</span>
+            <span class="stack-tag">Bento UI</span>
+          </div>
+        </div>
+        <div style="font-size: 0.74rem; color: var(--text-muted); margin-top: 12px;">
+          Hover any node to inspect stack layer.
+        </div>
+      </section>
+
+      <!-- TILE 5: INTERACTIVE TERMINAL (Span 2x1) -->
+      <section class="tile terminal-tile col-span-2 row-span-1">
+        <div class="term-header">
+          <div class="window-dots">
+            <span class="dot-r"></span>
+            <span class="dot-y"></span>
+            <span class="dot-g"></span>
+          </div>
+          <span style="font-size: 0.72rem; color: var(--text-muted);">shourya@bento-os: ~ (interactive)</span>
+        </div>
+        <div class="term-body" id="termBody">
+          <div class="term-line"><span class="prompt">➜</span>Welcome to Bento+Dark CLI. Type <b>help</b>, <b>projects</b>, <b>stack</b>, or <b>clear</b>.</div>
+        </div>
+        <div class="term-input-row">
+          <span class="prompt" style="color: var(--accent-coral); margin-right: 8px;">❯</span>
+          <input type="text" id="termInput" class="term-input" placeholder="Type a command and press Enter..." autocomplete="off" />
+        </div>
+      </section>
+
+      <!-- TILE 6: FEATURED PROJECTS (Span 2x1) -->
+      <section class="tile col-span-2 row-span-1">
+        <div>
+          <div class="tile-label">
+            <span>SHIPPED PROTOTYPES</span>
+            <span>INTERACTIVE TABS</span>
+          </div>
+          <div class="project-tabs">
+            <button class="proj-tab active" onclick="switchProject(0, this)">01 // Threat Intel Engine</button>
+            <button class="proj-tab" onclick="switchProject(1, this)">02 // ScholarSync ORM</button>
+            <button class="proj-tab" onclick="switchProject(2, this)">03 // Neural NPC Godot</button>
+          </div>
+        </div>
+        <div class="proj-content" id="projContent">
+          <h3>Multi-Format Threat Intelligence Transformer</h3>
+          <p>Automated cybersecurity pipeline converting raw threat feeds into structured, multi-format intelligence briefings.</p>
+        </div>
+      </section>
+
+      <!-- TILE 7: LO-FI WEB AUDIO SYNTH PAD (Span 1x1) -->
+      <section class="tile col-span-1 row-span-1">
+        <div class="tile-label">
+          <span>SYNTH DECK</span>
+          <span>WEB AUDIO</span>
+        </div>
+        <div style="font-size: 0.78rem; color: var(--text-muted);">
+          Tap pads to trigger dark-mode ambient synth chords:
+        </div>
+        <div class="synth-grid">
+          <div class="synth-pad" onclick="playChord([261.63, 329.63, 392.00, 493.88], this)">Cmaj7</div>
+          <div class="synth-pad" onclick="playChord([220.00, 261.63, 329.63, 392.00], this)">Am7</div>
+          <div class="synth-pad" onclick="playChord([174.61, 220.00, 261.63, 349.23], this)">Fmaj7</div>
+          <div class="synth-pad" onclick="playChord([196.00, 246.94, 293.66, 369.99], this)">G6</div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    // 1. Mouse-Tracking Radial Border Spotlight
+    const tiles = document.querySelectorAll('.tile');
+    document.getElementById('bentoGrid').addEventListener('mousemove', (e) => {
+      tiles.forEach(tile => {
+        const rect = tile.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        tile.style.setProperty('--mouse-x', `${x}px`);
+        tile.style.setProperty('--mouse-y', `${y}px`);
+      });
+    });
+
+    // 2. Live Pune IST Clock
+    function updateClock() {
+      const now = new Date();
+      const options = { timeZone: 'Asia/Kolkata', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' };
+      document.getElementById('liveClock').textContent = now.toLocaleTimeString('en-US', options);
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // 3. Simulated Local LLM Telemetry & Sparkline
+    setInterval(() => {
+      const tps = (61 + Math.random() * 8).toFixed(1);
+      document.getElementById('tpsCounter').textContent = tps;
+      document.querySelectorAll('.spark-bar').forEach(bar => {
+        bar.style.height = `${35 + Math.floor(Math.random() * 65)}%`;
+      });
+    }, 1800);
+
+    // 4. Interactive Project Switcher
+    const projects = [
+      {
+        title: "Multi-Format Threat Intelligence Transformer",
+        desc: "Automated cybersecurity pipeline converting raw threat feeds into structured, actionable multi-format intelligence briefings."
+      },
+      {
+        title: "ScholarSync // TypeScript + Drizzle Aggregator",
+        desc: "High-speed scholarship ingestion pipeline backed by PostgreSQL and Drizzle ORM with automated schema migrations."
+      },
+      {
+        title: "Neural NPC Dialogue Engine in Godot",
+        desc: "Narrative game prototype powered by live Large Language Model APIs for unscripted, context-aware NPC conversations."
+      }
+    ];
+
+    function switchProject(idx, btn) {
+      document.querySelectorAll('.proj-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      const box = document.getElementById('projContent');
+      box.innerHTML = `<h3>${projects[idx].title}</h3><p>${projects[idx].desc}</p>`;
+    }
+
+    // 5. Interactive Terminal Widget
+    const termInput = document.getElementById('termInput');
+    const termBody = document.getElementById('termBody');
+
+    const commands = {
+      help: "Available commands: projects, stack, style, hack, clear",
+      projects: "→ [1] Threat Intel Engine  [2] ScholarSync Postgres  [3] Godot LLM NPCs",
+      stack: "→ TypeScript, Python, PostgreSQL, Drizzle ORM, Node.js, Godot, Linux",
+      style: "→ Style Roulette draw: Bento + Dark Mode (CSS grid with span, dark surfaces)",
+      hack: "🚀 Initializing hackathon rapid-prototyping mode... All systems nominal."
+    };
+
+    function runTerminalCmd(cmdText) {
+      const clean = cmdText.trim().toLowerCase();
+      if (!clean) return;
+      if (clean === 'clear') {
+        termBody.innerHTML = '';
+        return;
+      }
+      const reply = commands[clean] || `Command not found: ${clean}. Type 'help' for options.`;
+      termBody.innerHTML += `<div class="term-line"><span class="prompt">➜</span><b>${clean}</b>: ${reply}</div>`;
+      termBody.scrollTop = termBody.scrollHeight;
+    }
+
+    termInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        runTerminalCmd(termInput.value);
+        termInput.value = '';
+      }
+    });
+
+    // 6. Web Audio API Ambient Synth Pad
+    let audioCtx;
+    function playChord(freqs, padEl) {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      padEl.classList.add('playing');
+      setTimeout(() => padEl.classList.remove('playing'), 500);
+
+      freqs.forEach(f => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(f, audioCtx.currentTime);
+
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1.4);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 1.4);
+      });
+    }
+
+    // 7. Pulse Grid Accent Button
+    document.getElementById('shuffleGlowBtn').addEventListener('click', () => {
+      tiles.forEach((tile, i) => {
+        setTimeout(() => {
+          tile.style.borderColor = '#ee9382';
+          setTimeout(() => tile.style.borderColor = '', 450);
+        }, i * 70);
+      });
+    });
+  </script>
+</body>
+</html>
