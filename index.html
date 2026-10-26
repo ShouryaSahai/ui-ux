@@ -3,26 +3,40 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shourya Sahai // Bento Command Center</title>
+  <title>Shourya Sahai // Bento + Dark Mode OS</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-deep: #07070b;
-      --surface-1: #101118;
-      --surface-2: #161822;
-      --surface-3: #1e202e;
-      --border-subtle: rgba(255, 255, 255, 0.07);
-      --border-highlight: rgba(164, 145, 255, 0.35);
-      --text-main: #f3f4f8;
-      --text-muted: #8b8fa3;
-      --accent-purple: #9288ff;
-      --accent-coral: #ee9382;
-      --accent-green: #34d399;
-      --accent-cyan: #38bdf8;
-      --gradient-brand: linear-gradient(135deg, var(--accent-purple) 0%, #c48present 50%, var(--accent-coral) 100%);
-      --radius-tile: 24px;
+      --bg-void: #050508;
+      --surface-0: #0b0c12;
+      --surface-1: #10121a;
+      --surface-2: #171925;
+      --surface-glass: rgba(20, 22, 34, 0.72);
+      --border-dim: rgba(255, 255, 255, 0.06);
+      --text-primary: #f4f5f8;
+      --text-secondary: #8a8f9e;
+      --accent-1: #9388ff;
+      --accent-2: #f09480;
+      --accent-3: #34d399;
+      --radius-lg: 26px;
+      --radius-md: 14px;
+      --grid-gap: 16px;
+    }
+
+    /* Theme Presets */
+    body[data-theme="cyber"] {
+      --accent-1: #00f2fe;
+      --accent-2: #4facfe;
+    }
+    body[data-theme="emerald"] {
+      --accent-1: #10b981;
+      --accent-2: #a3e635;
+    }
+    body[data-theme="solar"] {
+      --accent-1: #f59e0b;
+      --accent-2: #ef4444;
     }
 
     * {
@@ -32,154 +46,238 @@
     }
 
     body {
-      background-color: var(--bg-deep);
-      background-image: 
-        radial-gradient(circle at 15% 10%, rgba(146, 136, 255, 0.08), transparent 35%),
-        radial-gradient(circle at 85% 85%, rgba(238, 147, 130, 0.07), transparent 35%);
-      color: var(--text-main);
+      background-color: var(--bg-void);
+      background-image:
+        radial-gradient(circle at 12% 8%, color-mix(in srgb, var(--accent-1) 12%, transparent), transparent 38%),
+        radial-gradient(circle at 88% 90%, color-mix(in srgb, var(--accent-2) 10%, transparent), transparent 40%),
+        linear-gradient(to bottom, rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(to right, rgba(255,255,255,0.015) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+      color: var(--text-primary);
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       min-height: 100vh;
-      padding: 28px 20px 48px;
-      line-height: 1.5;
+      padding: 24px 20px 60px;
       overflow-x: hidden;
     }
 
     .container {
-      max-width: 1200px;
+      max-width: 1240px;
       margin: 0 auto;
     }
 
-    /* Top Bar */
-    header {
+    /* TOP NAVIGATION BAR */
+    .topbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 24px;
-      padding: 0 6px;
+      gap: 16px;
+      margin-bottom: 22px;
+      padding: 12px 18px;
+      background: var(--surface-glass);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-dim);
+      border-radius: 999px;
+      position: sticky;
+      top: 14px;
+      z-index: 50;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
-      font-weight: 700;
-      font-size: 1.05rem;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 0.95rem;
       letter-spacing: -0.02em;
     }
 
-    .brand-dot {
-      width: 10px;
-      height: 10px;
+    .brand-orb {
+      width: 11px;
+      height: 11px;
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent-purple), var(--accent-coral));
-      box-shadow: 0 0 12px var(--accent-purple);
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+      box-shadow: 0 0 14px var(--accent-1);
     }
 
-    .style-badge {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      background: var(--surface-1);
-      border: 1px solid var(--border-subtle);
-      padding: 6px 14px;
-      border-radius: 999px;
+    .nav-controls {
       display: flex;
       align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .pill-btn {
+      background: var(--surface-2);
+      border: 1px solid var(--border-dim);
+      color: var(--text-primary);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      padding: 7px 13px;
+      border-radius: 999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
       gap: 8px;
+      transition: all 0.2s ease;
     }
 
-    .style-badge span {
-      background: linear-gradient(90deg, var(--accent-purple), var(--accent-coral));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-weight: 600;
+    .pill-btn:hover, .pill-btn.active {
+      border-color: var(--accent-1);
+      background: color-mix(in srgb, var(--accent-1) 16%, var(--surface-2));
+      box-shadow: 0 0 20px color-mix(in srgb, var(--accent-1) 25%, transparent);
     }
 
-    /* BENTO GRID ARCHITECTURE */
+    .kbd {
+      background: rgba(255, 255, 255, 0.09);
+      padding: 2px 6px;
+      border-radius: 5px;
+      font-size: 0.68rem;
+      color: var(--text-secondary);
+    }
+
+    /* BENTO GRID ENGINE */
     .bento-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       grid-auto-rows: minmax(195px, auto);
-      gap: 16px;
+      gap: var(--grid-gap);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    /* Grid Spans */
-    .col-span-1 { grid-column: span 1; }
-    .col-span-2 { grid-column: span 2; }
-    .col-span-3 { grid-column: span 3; }
-    .row-span-1 { grid-row: span 1; }
-    .row-span-2 { grid-row: span 2; }
+    /* Span Utilities */
+    .col-1 { grid-column: span 1; }
+    .col-2 { grid-column: span 2; }
+    .col-3 { grid-column: span 3; }
+    .col-4 { grid-column: span 4; }
+    .row-1 { grid-row: span 1; }
+    .row-2 { grid-row: span 2; }
 
-    /* Dark Surface Tile Styling */
+    /* Alternate Layout Morph Mode */
+    .bento-grid.layout-cinema .tile-hero { grid-column: span 3; }
+    .bento-grid.layout-cinema .tile-neural { grid-column: span 1; grid-row: span 2; }
+    .bento-grid.layout-cinema .tile-stack { grid-column: span 2; grid-row: span 1; }
+
+    /* BENTO TILE WITH PROXIMITY GLOW BORDER */
     .tile {
       position: relative;
-      background: linear-gradient(165deg, var(--surface-2) 0%, var(--surface-1) 100%);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-tile);
+      background: var(--surface-1);
+      border-radius: var(--radius-lg);
       padding: 24px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       overflow: hidden;
-      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.28s ease, box-shadow 0.28s ease;
+      border: 1px solid var(--border-dim);
+      transform-style: preserve-3d;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+      box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
     }
 
-    /* Interactive Spotlight Hover Effect */
+    /* Radial Spotlight Layer */
     .tile::before {
       content: "";
       position: absolute;
       inset: 0;
-      border-radius: var(--radius-tile);
+      border-radius: inherit;
       background: radial-gradient(
-        500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-        rgba(146, 136, 255, 0.11),
-        transparent 40%
+        550px circle at var(--mx, -200px) var(--my, -200px),
+        color-mix(in srgb, var(--accent-1) 14%, transparent),
+        transparent 45%
       );
-      opacity: 0;
-      transition: opacity 0.3s ease;
       pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Glowing Border Rim Layer */
+    .tile::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1.5px;
+      background: radial-gradient(
+        320px circle at var(--mx, -200px) var(--my, -200px),
+        var(--accent-1),
+        var(--accent-2),
+        transparent 75%
+      );
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .tile > * {
+      position: relative;
+      z-index: 1;
     }
 
     .tile:hover {
-      transform: translateY(-3px);
-      border-color: rgba(146, 136, 255, 0.28);
-      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+      box-shadow: 0 22px 44px -12px rgba(0, 0, 0, 0.75), inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
     }
 
-    .tile:hover::before {
+    /* X-RAY INSPECTOR OVERLAY */
+    .xray-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px dashed var(--accent-1);
+      color: var(--accent-1);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      padding: 4px 9px;
+      border-radius: 6px;
+      opacity: 0;
+      transform: translateY(-6px);
+      transition: all 0.25s ease;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    body.xray-active .tile {
+      outline: 1px dashed color-mix(in srgb, var(--accent-1) 70%, transparent);
+      outline-offset: -4px;
+    }
+
+    body.xray-active .xray-badge {
       opacity: 1;
+      transform: translateY(0);
     }
 
-    .tile-label {
+    .tile-header {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.72rem;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: var(--text-muted);
+      color: var(--text-secondary);
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
       margin-bottom: 12px;
     }
 
     /* TILE 1: HERO PROFILE (2x2) */
-    .hero-tile {
-      background: 
-        radial-gradient(circle at 90% 10%, rgba(238, 147, 130, 0.16), transparent 45%),
-        radial-gradient(circle at 10% 90%, rgba(146, 136, 255, 0.18), transparent 50%),
-        linear-gradient(165deg, #171824 0%, #0e0f17 100%);
+    .tile-hero {
+      background:
+        radial-gradient(circle at 85% 15%, color-mix(in srgb, var(--accent-2) 18%, transparent), transparent 45%),
+        radial-gradient(circle at 10% 85%, color-mix(in srgb, var(--accent-1) 18%, transparent), transparent 50%),
+        linear-gradient(160deg, var(--surface-2) 0%, var(--surface-0) 100%);
     }
 
-    .status-pill {
+    .live-badge {
       display: inline-flex;
       align-items: center;
       gap: 8px;
       background: rgba(52, 211, 153, 0.1);
-      border: 1px solid rgba(52, 211, 153, 0.25);
-      color: var(--accent-green);
-      font-size: 0.75rem;
+      border: 1px solid rgba(52, 211, 153, 0.28);
+      color: var(--accent-3);
+      font-size: 0.74rem;
       font-weight: 600;
-      padding: 5px 12px;
+      padding: 5px 13px;
       border-radius: 999px;
       width: fit-content;
     }
@@ -187,40 +285,40 @@
     .pulse-dot {
       width: 7px;
       height: 7px;
-      background: var(--accent-green);
+      background: var(--accent-3);
       border-radius: 50%;
-      box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7);
-      animation: pulse 2s infinite;
+      animation: pulseGlow 2s infinite;
     }
 
-    @keyframes pulse {
+    @keyframes pulseGlow {
       0% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7); }
       70% { box-shadow: 0 0 0 8px rgba(52, 211, 153, 0); }
       100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
     }
 
     .hero-title {
-      font-size: clamp(2rem, 3.2vw, 2.85rem);
-      font-weight: 800;
-      letter-spacing: -0.035em;
-      line-height: 1.08;
+      font-size: clamp(2.1rem, 3.4vw, 3rem);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
       margin: 18px 0 14px;
     }
 
-    .gradient-text {
-      background: linear-gradient(95deg, #988eff 0%, #d48fff 45%, #f09582 100%);
+    .gradient-span {
+      background: linear-gradient(95deg, var(--accent-1) 0%, #d88fff 50%, var(--accent-2) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
-    .hero-sub {
-      color: var(--text-muted);
-      font-size: 0.96rem;
+    .hero-desc {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.55;
       max-width: 92%;
-      margin-bottom: 22px;
+      margin-bottom: 20px;
     }
 
-    .hero-actions {
+    .btn-row {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
@@ -231,557 +329,867 @@
       border: none;
       font-family: inherit;
       font-weight: 600;
-      font-size: 0.85rem;
-      padding: 10px 18px;
-      border-radius: 12px;
-      transition: all 0.2s ease;
+      font-size: 0.84rem;
+      padding: 11px 18px;
+      border-radius: 13px;
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      transition: all 0.2s ease;
     }
 
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent-purple), var(--accent-coral));
-      color: #09090d;
-      box-shadow: 0 4px 20px rgba(146, 136, 255, 0.3);
+    .btn-grad {
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+      color: #060609;
+      box-shadow: 0 6px 24px color-mix(in srgb, var(--accent-1) 35%, transparent);
     }
 
-    .btn-primary:hover {
-      transform: scale(1.03);
-      box-shadow: 0 6px 25px rgba(238, 147, 130, 0.45);
+    .btn-grad:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 10px 28px color-mix(in srgb, var(--accent-2) 45%, transparent);
     }
 
-    .btn-ghost {
-      background: var(--surface-3);
-      color: var(--text-main);
-      border: 1px solid var(--border-subtle);
+    .btn-dark {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-primary);
+      border: 1px solid var(--border-dim);
     }
 
-    .btn-ghost:hover {
-      background: rgba(255, 255, 255, 0.1);
+    .btn-dark:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: var(--accent-1);
     }
 
-    /* TILE 2: LOCAL AI TELEMETRY (1x1) */
-    .metric-big {
+    /* TILE 2: INTERACTIVE NEURAL CANVAS (1x1) */
+    .tile-neural {
+      padding: 18px;
+      background: var(--surface-0);
+    }
+
+    #neuralCanvas {
+      width: 100%;
+      height: 115px;
+      border-radius: 12px;
+      cursor: crosshair;
+      display: block;
+    }
+
+    /* TILE 3: IST RADAR CLOCK & TELEMETRY (1x1) */
+    .clock-big {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 2.1rem;
-      font-weight: 700;
-      color: var(--text-main);
-      display: flex;
-      align-items: baseline;
-      gap: 6px;
-    }
-
-    .metric-unit {
-      font-size: 0.8rem;
-      color: var(--accent-purple);
-      font-weight: 500;
-    }
-
-    .sparkline {
-      display: flex;
-      align-items: flex-end;
-      gap: 5px;
-      height: 42px;
-      margin-top: 12px;
-    }
-
-    .spark-bar {
-      flex: 1;
-      background: linear-gradient(to top, rgba(146, 136, 255, 0.2), var(--accent-purple));
-      border-radius: 4px;
-      transition: height 0.4s ease;
-    }
-
-    /* TILE 3: LOCATION & IST CLOCK (1x1) */
-    .clock-display {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 1.85rem;
-      font-weight: 700;
-      letter-spacing: -0.03em;
+      font-size: 1.9rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
       margin: 4px 0;
     }
 
-    .coords {
+    .telemetry-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface-2);
+      padding: 7px 11px;
+      border-radius: 10px;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--accent-coral);
-      background: rgba(238, 147, 130, 0.1);
-      padding: 4px 10px;
-      border-radius: 8px;
-      width: fit-content;
+      font-size: 0.73rem;
+      color: var(--accent-2);
     }
 
-    /* TILE 4: INTERACTIVE CLI TERMINAL (2x1) */
-    .terminal-tile {
-      background: #0a0b10;
+    /* TILE 4: INTERACTIVE TERMINAL (2x1) */
+    .tile-terminal {
+      background: #07080d;
       font-family: 'JetBrains Mono', monospace;
       padding: 18px 20px;
     }
 
-    .term-header {
+    .term-top {
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
       padding-bottom: 10px;
-      border-bottom: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-dim);
       margin-bottom: 10px;
     }
 
-    .window-dots {
+    .mac-dots {
       display: flex;
       gap: 6px;
     }
-
-    .window-dots span {
+    .mac-dots span {
       width: 10px;
       height: 10px;
       border-radius: 50%;
     }
 
-    .dot-r { background: #ff5f56; }
-    .dot-y { background: #ffbd2e; }
-    .dot-g { background: #27c93f; }
-
-    .term-body {
-      font-size: 0.8rem;
-      height: 92px;
+    .term-log {
+      font-size: 0.79rem;
+      height: 85px;
       overflow-y: auto;
-      color: #c5c9d6;
+      color: #d1d5db;
       display: flex;
       flex-direction: column;
       gap: 4px;
     }
 
-    .term-line .prompt {
-      color: var(--accent-purple);
-      margin-right: 8px;
+    .term-cmd-chips {
+      display: flex;
+      gap: 6px;
+      margin: 6px 0;
     }
 
-    .term-input-row {
+    .cmd-chip {
+      font-size: 0.68rem;
+      background: var(--surface-2);
+      color: var(--accent-1);
+      border: 1px solid var(--border-dim);
+      padding: 2px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .cmd-chip:hover {
+      background: var(--accent-1);
+      color: #050508;
+    }
+
+    .term-input-wrap {
       display: flex;
       align-items: center;
-      margin-top: 6px;
-      border-top: 1px dashed rgba(255, 255, 255, 0.08);
-      padding-top: 8px;
+      border-top: 1px dashed var(--border-dim);
+      padding-top: 7px;
     }
 
     .term-input {
       background: transparent;
       border: none;
-      color: var(--accent-green);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.82rem;
+      color: var(--accent-3);
+      font-family: inherit;
+      font-size: 0.8rem;
       width: 100%;
       outline: none;
     }
 
-    /* TILE 5: STACK MATRIX (1x2) */
-    .stack-list {
+    /* TILE 5: TECH STACK MATRIX (1x2) */
+    .stack-grid {
       display: flex;
       flex-direction: column;
-      gap: 9px;
-      margin-top: 8px;
-    }
-
-    .stack-item {
-      background: var(--surface-3);
-      border: 1px solid var(--border-subtle);
-      padding: 10px 13px;
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 0.84rem;
-      font-weight: 500;
-      transition: transform 0.2s ease, border-color 0.2s ease;
-    }
-
-    .stack-item:hover {
-      transform: translateX(4px);
-      border-color: var(--accent-purple);
-    }
-
-    .stack-tag {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
-      padding: 2px 8px;
-      border-radius: 6px;
-      background: rgba(146, 136, 255, 0.14);
-      color: var(--accent-purple);
-    }
-
-    /* TILE 6: FEATURED PROJECTS SWITCHER (2x1) */
-    .project-tabs {
-      display: flex;
       gap: 8px;
-      margin-bottom: 12px;
     }
 
-    .proj-tab {
-      background: var(--surface-3);
-      border: 1px solid var(--border-subtle);
-      color: var(--text-muted);
+    .stack-row {
+      background: var(--surface-2);
+      border: 1px solid var(--border-dim);
+      padding: 10px 13px;
+      border-radius: 13px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.83rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .stack-row:hover {
+      transform: translateX(5px);
+      border-color: var(--accent-1);
+      background: color-mix(in srgb, var(--accent-1) 12%, var(--surface-2));
+    }
+
+    .badge-mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.67rem;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--accent-1);
+    }
+
+    /* TILE 6: INTERACTIVE PROJECT SHOWCASE (2x1) */
+    .proj-nav {
+      display: flex;
+      gap: 7px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .proj-pill {
+      background: var(--surface-2);
+      border: 1px solid var(--border-dim);
+      color: var(--text-secondary);
       padding: 6px 12px;
       border-radius: 10px;
-      font-size: 0.76rem;
+      font-size: 0.75rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.2s;
     }
 
-    .proj-tab.active {
-      background: rgba(146, 136, 255, 0.18);
-      color: var(--text-main);
-      border-color: var(--accent-purple);
+    .proj-pill.active {
+      background: linear-gradient(135deg, color-mix(in srgb, var(--accent-1) 25%, transparent), color-mix(in srgb, var(--accent-2) 25%, transparent));
+      color: var(--text-primary);
+      border-color: var(--accent-1);
     }
 
-    .proj-content h3 {
-      font-size: 1.15rem;
-      margin-bottom: 4px;
+    .proj-box {
+      background: var(--surface-0);
+      border: 1px solid var(--border-dim);
+      padding: 14px 16px;
+      border-radius: 14px;
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 8px;
+      gap: 12px;
     }
 
-    .proj-content p {
-      font-size: 0.85rem;
-      color: var(--text-muted);
+    .proj-box h3 {
+      font-size: 1.02rem;
+      margin-bottom: 4px;
     }
 
-    /* TILE 7: AMBIENT SYNTH PAD (1x1) */
-    .synth-grid {
+    .proj-box p {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+    }
+
+    /* TILE 7: SEQUENCER & SYNTH PAD (1x1) */
+    .seq-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 4px;
+      height: 36px;
+      margin: 6px 0 10px;
+    }
+
+    .seq-bar {
+      flex: 1;
+      background: linear-gradient(to top, var(--accent-1), var(--accent-2));
+      height: 22%;
+      border-radius: 3px;
+      transition: height 0.15s ease;
+    }
+
+    .pad-row {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-      margin-top: 8px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
     }
 
-    .synth-pad {
-      background: var(--surface-3);
-      border: 1px solid var(--border-subtle);
-      border-radius: 12px;
-      padding: 12px 8px;
+    .chord-btn {
+      background: var(--surface-2);
+      border: 1px solid var(--border-dim);
+      border-radius: 10px;
+      padding: 9px 4px;
       text-align: center;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--text-main);
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-primary);
       cursor: pointer;
       user-select: none;
       transition: all 0.15s ease;
     }
 
-    .synth-pad:active, .synth-pad.playing {
-      background: linear-gradient(135deg, var(--accent-purple), var(--accent-coral));
-      color: #07070b;
-      font-weight: 700;
-      transform: scale(0.95);
-      box-shadow: 0 0 18px rgba(146, 136, 255, 0.5);
+    .chord-btn:hover {
+      border-color: var(--accent-1);
     }
 
-    /* Responsive Breakpoints */
+    .chord-btn.active {
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+      color: #050508;
+      transform: scale(0.94);
+      box-shadow: 0 0 16px var(--accent-1);
+    }
+
+    /* COMMAND PALETTE MODAL (Cmd+K) */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 4, 7, 0.76);
+      backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 20px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .cmd-modal {
+      width: 100%;
+      max-width: 520px;
+      background: var(--surface-1);
+      border: 1px solid var(--accent-1);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.85);
+    }
+
+    .cmd-header {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border-dim);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+    }
+
+    .cmd-list {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .cmd-item {
+      padding: 11px 14px;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      font-size: 0.86rem;
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      text-align: left;
+      font-family: inherit;
+    }
+
+    .cmd-item:hover {
+      background: var(--surface-2);
+      color: var(--accent-1);
+    }
+
     @media (max-width: 1024px) {
-      .bento-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
+      .bento-grid { grid-template-columns: repeat(2, 1fr); }
+      .bento-grid.layout-cinema .tile-hero { grid-column: span 2; }
     }
 
     @media (max-width: 640px) {
-      .bento-grid {
-        grid-template-columns: 1fr;
-      }
-      .col-span-2, .col-span-3 {
-        grid-column: span 1;
-      }
+      .bento-grid { grid-template-columns: 1fr; }
+      .col-1, .col-2, .col-3, .col-4 { grid-column: span 1 !important; }
     }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <header>
+    <!-- STICKY GLASS TOPBAR -->
+    <nav class="topbar">
       <div class="brand">
-        <div class="brand-dot"></div>
-        <span>SHOURYA.OS // BENTO</span>
+        <span class="brand-orb"></span>
+        <span>SHOURYA.OS // BENTO v2</span>
       </div>
-      <div class="style-badge">
-        Style Roulette: <span>Bento + Dark Mode</span>
+      <div class="nav-controls">
+        <button class="pill-btn" id="xrayBtn" onclick="toggleXray()">
+          <span>🔍 Grid X-Ray</span>
+          <span class="kbd">X</span>
+        </button>
+        <button class="pill-btn" id="morphBtn" onclick="morphGrid()">
+          <span>⊞ Morph Spans</span>
+        </button>
+        <button class="pill-btn" onclick="cycleTheme()">
+          <span>🎨 Theme</span>
+        </button>
+        <button class="pill-btn" onclick="toggleCmdModal()">
+          <span>⚡ Command</span>
+          <span class="kbd">⌘K</span>
+        </button>
       </div>
-    </header>
+    </nav>
 
-    <!-- MAIN BENTO GRID -->
+    <!-- MAIN ASYMMETRIC BENTO GRID -->
     <main class="bento-grid" id="bentoGrid">
 
-      <!-- TILE 1: HERO (Span 2x2) -->
-      <section class="tile hero-tile col-span-2 row-span-2">
+      <!-- TILE 1: HERO (col-span-2, row-span-2) -->
+      <section class="tile tile-hero col-2 row-2">
+        <span class="xray-badge">grid-column: span 2 | grid-row: span 2</span>
         <div>
-          <div class="status-pill">
+          <div class="live-badge">
             <span class="pulse-dot"></span>
-            CS &amp; AI Undergrad • Building Fast
+            Style Roulette // Bento + Dark Mode
           </div>
           <h1 class="hero-title">
             Shourya Sahai.<br />
-            <span class="gradient-text">Bento + Dark Mode.</span>
+            <span class="gradient-span">Bento + Dark Mode.</span>
           </h1>
-          <p class="hero-sub">
-            Full-stack prototyping, local LLM orchestration, and interactive systems. Engineered with CSS Grid spans and tactile dark surfaces.
+          <p class="hero-desc">
+            Engineered with multi-span CSS Grid architecture, proximity-reactive dark surfaces, live WebAudio synthesis, and interactive physics nodes.
           </p>
         </div>
-        <div class="hero-actions">
-          <button class="btn btn-primary" id="shuffleGlowBtn">⚡ Pulse Grid</button>
-          <button class="btn btn-ghost" onclick="runTerminalCmd('projects')">Explore Builds →</button>
+        <div class="btn-row">
+          <button class="btn btn-grad" onclick="triggerShockwave()">⚡ Pulse Surfaces</button>
+          <button class="btn btn-dark" onclick="toggleXray()">Inspect CSS Spans</button>
+          <button class="btn btn-dark" onclick="toggleCmdModal()">Open Palette ⌘K</button>
         </div>
       </section>
 
-      <!-- TILE 2: LOCAL LLM INFERENCE (Span 1x1) -->
-      <section class="tile col-span-1 row-span-1">
-        <div class="tile-label">
-          <span>LOCAL INFERENCE</span>
-          <span style="color: var(--accent-green)">● OLLAMA</span>
+      <!-- TILE 2: INTERACTIVE NEURAL NODE CANVAS (col-span-1, row-span-1) -->
+      <section class="tile tile-neural col-1 row-1">
+        <span class="xray-badge">grid-column: span 1 | canvas</span>
+        <div class="tile-header">
+          <span>NEURAL MESH</span>
+          <span style="color: var(--accent-3);">● INTERACTIVE</span>
         </div>
-        <div>
-          <div class="metric-big">
-            <span id="tpsCounter">64.8</span>
-            <span class="metric-unit">tok/s</span>
-          </div>
-          <div style="font-size: 0.76rem; color: var(--text-muted);">llama.cpp • 4-bit quantization</div>
-        </div>
-        <div class="sparkline" id="sparkline">
-          <div class="spark-bar" style="height: 45%"></div>
-          <div class="spark-bar" style="height: 70%"></div>
-          <div class="spark-bar" style="height: 55%"></div>
-          <div class="spark-bar" style="height: 90%"></div>
-          <div class="spark-bar" style="height: 65%"></div>
-          <div class="spark-bar" style="height: 80%"></div>
-          <div class="spark-bar" style="height: 95%"></div>
-          <div class="spark-bar" style="height: 75%"></div>
+        <canvas id="neuralCanvas"></canvas>
+        <div style="font-size: 0.72rem; color: var(--text-secondary); margin-top: 6px;">
+          Move cursor or click to spawn nodes
         </div>
       </section>
 
-      <!-- TILE 3: BASE OF OPERATIONS / CLOCK (Span 1x1) -->
-      <section class="tile col-span-1 row-span-1">
-        <div class="tile-label">
-          <span>BASE STATION</span>
+      <!-- TILE 3: LIVE TELEMETRY & CLOCK (col-span-1, row-span-1) -->
+      <section class="tile col-1 row-1">
+        <span class="xray-badge">grid-column: span 1 | surface-1</span>
+        <div class="tile-header">
+          <span>PUNE // BASE</span>
           <span>IST (UTC+5:30)</span>
         </div>
         <div>
-          <div style="font-size: 0.9rem; font-weight: 600;">Pune, India</div>
-          <div class="clock-display" id="liveClock">14:55:00</div>
+          <div style="font-size: 0.82rem; color: var(--text-secondary);">Local System Time</div>
+          <div class="clock-big" id="clockDisplay">15:18:00</div>
         </div>
-        <div class="coords">18.5204° N, 73.8567° E</div>
+        <div class="telemetry-bar">
+          <span>LLM INFERENCE</span>
+          <span id="tpsValue">68.4 tok/s</span>
+        </div>
       </section>
 
-      <!-- TILE 4: TECH STACK (Span 1x2) -->
-      <section class="tile col-span-1 row-span-2">
-        <div class="tile-label">
-          <span>CORE ARSENAL</span>
-          <span>06 NODES</span>
+      <!-- TILE 4: CORE ARSENAL STACK (col-span-1, row-span-2) -->
+      <section class="tile tile-stack col-1 row-2">
+        <span class="xray-badge">grid-column: span 1 | grid-row: span 2</span>
+        <div class="tile-header">
+          <span>TECH ARSENAL</span>
+          <span>06 LAYERS</span>
         </div>
-        <div class="stack-list">
-          <div class="stack-item">
-            <span>TypeScript / Node</span>
-            <span class="stack-tag">Full-Stack</span>
+        <div class="stack-grid">
+          <div class="stack-row">
+            <span>TypeScript &amp; Node</span>
+            <span class="badge-mono">Backend</span>
           </div>
-          <div class="stack-item">
-            <span>Python &amp; AI Agents</span>
-            <span class="stack-tag">LLM / RAG</span>
+          <div class="stack-row">
+            <span>Python &amp; Local LLMs</span>
+            <span class="badge-mono">AI / Agents</span>
           </div>
-          <div class="stack-item">
+          <div class="stack-row">
             <span>PostgreSQL + Drizzle</span>
-            <span class="stack-tag">Data ORM</span>
+            <span class="badge-mono">Database</span>
           </div>
-          <div class="stack-item">
-            <span>Godot Engine</span>
-            <span class="stack-tag">GDScript</span>
+          <div class="stack-row">
+            <span>Godot 4 Engine</span>
+            <span class="badge-mono">GDScript</span>
           </div>
-          <div class="stack-item">
-            <span>Linux CLI &amp; Git</span>
-            <span class="stack-tag">SysAdmin</span>
+          <div class="stack-row">
+            <span>Linux &amp; Git CLI</span>
+            <span class="badge-mono">Systems</span>
           </div>
-          <div class="stack-item">
-            <span>CSS Grid Architecture</span>
-            <span class="stack-tag">Bento UI</span>
+          <div class="stack-row">
+            <span>CSS Grid + Dark UI</span>
+            <span class="badge-mono">Frontend</span>
           </div>
         </div>
-        <div style="font-size: 0.74rem; color: var(--text-muted); margin-top: 12px;">
-          Hover any node to inspect stack layer.
-        </div>
-      </section>
-
-      <!-- TILE 5: INTERACTIVE TERMINAL (Span 2x1) -->
-      <section class="tile terminal-tile col-span-2 row-span-1">
-        <div class="term-header">
-          <div class="window-dots">
-            <span class="dot-r"></span>
-            <span class="dot-y"></span>
-            <span class="dot-g"></span>
-          </div>
-          <span style="font-size: 0.72rem; color: var(--text-muted);">shourya@bento-os: ~ (interactive)</span>
-        </div>
-        <div class="term-body" id="termBody">
-          <div class="term-line"><span class="prompt">➜</span>Welcome to Bento+Dark CLI. Type <b>help</b>, <b>projects</b>, <b>stack</b>, or <b>clear</b>.</div>
-        </div>
-        <div class="term-input-row">
-          <span class="prompt" style="color: var(--accent-coral); margin-right: 8px;">❯</span>
-          <input type="text" id="termInput" class="term-input" placeholder="Type a command and press Enter..." autocomplete="off" />
+        <div style="font-size: 0.73rem; color: var(--text-secondary); margin-top: 10px;">
+          Built on dark surfaces (#0b0c12 → #171925)
         </div>
       </section>
 
-      <!-- TILE 6: FEATURED PROJECTS (Span 2x1) -->
-      <section class="tile col-span-2 row-span-1">
+      <!-- TILE 5: INTERACTIVE TERMINAL (col-span-2, row-span-1) -->
+      <section class="tile tile-terminal col-2 row-1">
+        <span class="xray-badge">grid-column: span 2 | surface-0</span>
+        <div class="term-top">
+          <div class="mac-dots">
+            <span style="background:#ff5f56"></span>
+            <span style="background:#ffbd2e"></span>
+            <span style="background:#27c93f"></span>
+          </div>
+          <span style="font-size: 0.7rem; color: var(--text-secondary);">shourya@bento-os:~ (zsh)</span>
+        </div>
+        <div class="term-log" id="termLog">
+          <div><span style="color:var(--accent-1)">➜</span> Ready. Click a quick chip below or type a command:</div>
+        </div>
+        <div class="term-cmd-chips">
+          <span class="cmd-chip" onclick="execTerm('projects')">projects</span>
+          <span class="cmd-chip" onclick="execTerm('style')">style</span>
+          <span class="cmd-chip" onclick="execTerm('xray')">xray</span>
+          <span class="cmd-chip" onclick="execTerm('matrix')">matrix</span>
+          <span class="cmd-chip" onclick="execTerm('clear')">clear</span>
+        </div>
+        <div class="term-input-wrap">
+          <span style="color:var(--accent-2); margin-right:8px;">❯</span>
+          <input type="text" id="termInput" class="term-input" placeholder="Type command & press Enter..." autocomplete="off" />
+        </div>
+      </section>
+
+      <!-- TILE 6: SHIPPED PROJECTS SWITCHER (col-span-2, row-span-1) -->
+      <section class="tile col-2 row-1">
+        <span class="xray-badge">grid-column: span 2 | grid-row: span 1</span>
         <div>
-          <div class="tile-label">
-            <span>SHIPPED PROTOTYPES</span>
-            <span>INTERACTIVE TABS</span>
+          <div class="tile-header">
+            <span>SHIPPED BUILDS</span>
+            <span>LIVE PREVIEW</span>
           </div>
-          <div class="project-tabs">
-            <button class="proj-tab active" onclick="switchProject(0, this)">01 // Threat Intel Engine</button>
-            <button class="proj-tab" onclick="switchProject(1, this)">02 // ScholarSync ORM</button>
-            <button class="proj-tab" onclick="switchProject(2, this)">03 // Neural NPC Godot</button>
+          <div class="proj-nav">
+            <button class="proj-pill active" onclick="selectProj(0, this)">01 // Threat Intel Transformer</button>
+            <button class="proj-pill" onclick="selectProj(1, this)">02 // ScholarSync Drizzle ORM</button>
+            <button class="proj-pill" onclick="selectProj(2, this)">03 // Godot Neural NPCs</button>
           </div>
         </div>
-        <div class="proj-content" id="projContent">
-          <h3>Multi-Format Threat Intelligence Transformer</h3>
-          <p>Automated cybersecurity pipeline converting raw threat feeds into structured, multi-format intelligence briefings.</p>
+        <div class="proj-box" id="projDisplay">
+          <div>
+            <h3>Multi-Format Threat Intelligence Engine</h3>
+            <p>Transforms raw cybersecurity feeds into structured multi-format intelligence reports.</p>
+          </div>
+          <span class="badge-mono">SIH Build</span>
         </div>
       </section>
 
-      <!-- TILE 7: LO-FI WEB AUDIO SYNTH PAD (Span 1x1) -->
-      <section class="tile col-span-1 row-span-1">
-        <div class="tile-label">
-          <span>SYNTH DECK</span>
-          <span>WEB AUDIO</span>
+      <!-- TILE 7: WEBAUDIO SYNTH & LOOP SEQUENCER (col-span-1, row-span-1) -->
+      <section class="tile col-1 row-1">
+        <span class="xray-badge">grid-column: span 1 | WebAudio</span>
+        <div class="tile-header">
+          <span>SYNTH ENGINE</span>
+          <span id="loopToggle" style="cursor:pointer; color:var(--accent-2);" onclick="toggleAutoLoop()">▶ AUTO-LOOP</span>
         </div>
-        <div style="font-size: 0.78rem; color: var(--text-muted);">
-          Tap pads to trigger dark-mode ambient synth chords:
+        <div class="seq-bars" id="seqBars">
+          <div class="seq-bar"></div><div class="seq-bar"></div><div class="seq-bar"></div><div class="seq-bar"></div>
+          <div class="seq-bar"></div><div class="seq-bar"></div><div class="seq-bar"></div><div class="seq-bar"></div>
         </div>
-        <div class="synth-grid">
-          <div class="synth-pad" onclick="playChord([261.63, 329.63, 392.00, 493.88], this)">Cmaj7</div>
-          <div class="synth-pad" onclick="playChord([220.00, 261.63, 329.63, 392.00], this)">Am7</div>
-          <div class="synth-pad" onclick="playChord([174.61, 220.00, 261.63, 349.23], this)">Fmaj7</div>
-          <div class="synth-pad" onclick="playChord([196.00, 246.94, 293.66, 369.99], this)">G6</div>
+        <div class="pad-row">
+          <div class="chord-btn" onclick="triggerChord(0, this)">Cmaj9</div>
+          <div class="chord-btn" onclick="triggerChord(1, this)">Am11</div>
+          <div class="chord-btn" onclick="triggerChord(2, this)">Fmaj7</div>
+          <div class="chord-btn" onclick="triggerChord(3, this)">G13</div>
         </div>
       </section>
 
     </main>
   </div>
 
+  <!-- COMMAND PALETTE MODAL -->
+  <div class="modal-backdrop" id="cmdBackdrop" onclick="if(event.target===this) toggleCmdModal()">
+    <div class="cmd-modal">
+      <div class="cmd-header">
+        <span>⚡ BENTO COMMAND PALETTE</span>
+        <span>ESC to close</span>
+      </div>
+      <div class="cmd-list">
+        <button class="cmd-item" onclick="toggleXray(); toggleCmdModal()">
+          <span>🔍 Toggle CSS Grid X-Ray Inspector</span>
+          <span class="kbd">X</span>
+        </button>
+        <button class="cmd-item" onclick="morphGrid(); toggleCmdModal()">
+          <span>⊞ Morph CSS Grid Span Topology</span>
+          <span class="kbd">Span</span>
+        </button>
+        <button class="cmd-item" onclick="cycleTheme(); toggleCmdModal()">
+          <span>🎨 Cycle Dark Mode Accent Palette</span>
+          <span class="kbd">Theme</span>
+        </button>
+        <button class="cmd-item" onclick="triggerShockwave(); toggleCmdModal()">
+          <span>🌊 Trigger Bento Surface Wave</span>
+          <span class="kbd">Pulse</span>
+        </button>
+        <button class="cmd-item" onclick="toggleAutoLoop(); toggleCmdModal()">
+          <span>🎹 Toggle Ambient Synth Sequencer</span>
+          <span class="kbd">Audio</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // 1. Mouse-Tracking Radial Border Spotlight
+    // 1. PROXIMITY BORDER ILLUMINATION & SUBTLE 3D TILT
     const tiles = document.querySelectorAll('.tile');
-    document.getElementById('bentoGrid').addEventListener('mousemove', (e) => {
+    window.addEventListener('mousemove', (e) => {
       tiles.forEach(tile => {
         const rect = tile.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
-        tile.style.setProperty('--mouse-x', `${x}px`);
-        tile.style.setProperty('--mouse-y', `${y}px`);
+        tile.style.setProperty('--mx', `${x}px`);
+        tile.style.setProperty('--my', `${y}px`);
       });
     });
 
-    // 2. Live Pune IST Clock
-    function updateClock() {
-      const now = new Date();
-      const options = { timeZone: 'Asia/Kolkata', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' };
-      document.getElementById('liveClock').textContent = now.toLocaleTimeString('en-US', options);
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-
-    // 3. Simulated Local LLM Telemetry & Sparkline
-    setInterval(() => {
-      const tps = (61 + Math.random() * 8).toFixed(1);
-      document.getElementById('tpsCounter').textContent = tps;
-      document.querySelectorAll('.spark-bar').forEach(bar => {
-        bar.style.height = `${35 + Math.floor(Math.random() * 65)}%`;
+    tiles.forEach(tile => {
+      tile.addEventListener('mousemove', (e) => {
+        const rect = tile.getBoundingClientRect();
+        const cx = rect.width / 2;
+        const cy = rect.height / 2;
+        const dx = (e.clientX - rect.left - cx) / cx;
+        const dy = (e.clientY - rect.top - cy) / cy;
+        tile.style.transform = `perspective(900px) rotateX(${-dy * 2.5}deg) rotateY(${dx * 2.5}deg) translateY(-3px)`;
       });
-    }, 1800);
+      tile.addEventListener('mouseleave', () => {
+        tile.style.transform = '';
+      });
+    });
 
-    // 4. Interactive Project Switcher
-    const projects = [
-      {
-        title: "Multi-Format Threat Intelligence Transformer",
-        desc: "Automated cybersecurity pipeline converting raw threat feeds into structured, actionable multi-format intelligence briefings."
-      },
-      {
-        title: "ScholarSync // TypeScript + Drizzle Aggregator",
-        desc: "High-speed scholarship ingestion pipeline backed by PostgreSQL and Drizzle ORM with automated schema migrations."
-      },
-      {
-        title: "Neural NPC Dialogue Engine in Godot",
-        desc: "Narrative game prototype powered by live Large Language Model APIs for unscripted, context-aware NPC conversations."
-      }
-    ];
+    // 2. INTERACTIVE NEURAL NODE CANVAS
+    const canvas = document.getElementById('neuralCanvas');
+    const ctx = canvas.getContext('2d');
+    let nodes = [];
+    let pointer = { x: -999, y: -999 };
 
-    function switchProject(idx, btn) {
-      document.querySelectorAll('.proj-tab').forEach(t => t.classList.remove('active'));
-      btn.classList.add('active');
-      const box = document.getElementById('projContent');
-      box.innerHTML = `<h3>${projects[idx].title}</h3><p>${projects[idx].desc}</p>`;
+    function resizeCanvas() {
+      canvas.width = canvas.clientWidth * window.devicePixelRatio;
+      canvas.height = canvas.clientHeight * window.devicePixelRatio;
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    for (let i = 0; i < 18; i++) {
+      nodes.push({
+        x: Math.random() * canvas.clientWidth,
+        y: Math.random() * canvas.clientHeight,
+        vx: (Math.random() - 0.5) * 0.9,
+        vy: (Math.random() - 0.5) * 0.9
+      });
     }
 
-    // 5. Interactive Terminal Widget
+    canvas.addEventListener('mousemove', (e) => {
+      const r = canvas.getBoundingClientRect();
+      pointer.x = e.clientX - r.left;
+      pointer.y = e.clientY - r.top;
+    });
+    canvas.addEventListener('mouseleave', () => { pointer.x = -999; pointer.y = -999; });
+    canvas.addEventListener('click', (e) => {
+      const r = canvas.getBoundingClientRect();
+      nodes.push({
+        x: e.clientX - r.left,
+        y: e.clientY - r.top,
+        vx: (Math.random() - 0.5) * 1.6,
+        vy: (Math.random() - 0.5) * 1.6
+      });
+      if (nodes.length > 28) nodes.shift();
+    });
+
+    function animateNeural() {
+      const w = canvas.clientWidth;
+      const h = canvas.clientHeight;
+      ctx.clearRect(0, 0, w, h);
+
+      nodes.forEach((n, i) => {
+        n.x += n.vx;
+        n.y += n.vy;
+        if (n.x < 0 || n.x > w) n.vx *= -1;
+        if (n.y < 0 || n.y > h) n.vy *= -1;
+
+        for (let j = i + 1; j < nodes.length; j++) {
+          const m = nodes[j];
+          const dist = Math.hypot(n.x - m.x, n.y - m.y);
+          if (dist < 65) {
+            ctx.strokeStyle = `rgba(147, 136, 255, ${1 - dist / 65})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(n.x, n.y);
+            ctx.lineTo(m.x, m.y);
+            ctx.stroke();
+          }
+        }
+
+        const pDist = Math.hypot(n.x - pointer.x, n.y - pointer.y);
+        if (pDist < 85) {
+          ctx.strokeStyle = `rgba(240, 148, 128, ${1 - pDist / 85})`;
+          ctx.beginPath();
+          ctx.moveTo(n.x, n.y);
+          ctx.lineTo(pointer.x, pointer.y);
+          ctx.stroke();
+        }
+
+        ctx.fillStyle = '#f09480';
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, 2.2, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      requestAnimationFrame(animateNeural);
+    }
+    animateNeural();
+
+    // 3. LIVE CLOCK & TELEMETRY
+    function tickClock() {
+      const now = new Date();
+      document.getElementById('clockDisplay').textContent = now.toLocaleTimeString('en-US', {
+        timeZone: 'Asia/Kolkata',
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      });
+    }
+    setInterval(tickClock, 1000);
+    tickClock();
+
+    setInterval(() => {
+      document.getElementById('tpsValue').textContent = `${(64 + Math.random() * 9).toFixed(1)} tok/s`;
+    }, 1600);
+
+    // 4. INTERACTIVE TERMINAL
+    const termLog = document.getElementById('termLog');
     const termInput = document.getElementById('termInput');
-    const termBody = document.getElementById('termBody');
 
-    const commands = {
-      help: "Available commands: projects, stack, style, hack, clear",
-      projects: "→ [1] Threat Intel Engine  [2] ScholarSync Postgres  [3] Godot LLM NPCs",
-      stack: "→ TypeScript, Python, PostgreSQL, Drizzle ORM, Node.js, Godot, Linux",
-      style: "→ Style Roulette draw: Bento + Dark Mode (CSS grid with span, dark surfaces)",
-      hack: "🚀 Initializing hackathon rapid-prototyping mode... All systems nominal."
-    };
+    function execTerm(cmd) {
+      const c = cmd.trim().toLowerCase();
+      if (!c) return;
+      if (c === 'clear') { termLog.innerHTML = ''; return; }
+      if (c === 'xray') toggleXray();
+      if (c === 'matrix') cycleTheme();
 
-    function runTerminalCmd(cmdText) {
-      const clean = cmdText.trim().toLowerCase();
-      if (!clean) return;
-      if (clean === 'clear') {
-        termBody.innerHTML = '';
-        return;
-      }
-      const reply = commands[clean] || `Command not found: ${clean}. Type 'help' for options.`;
-      termBody.innerHTML += `<div class="term-line"><span class="prompt">➜</span><b>${clean}</b>: ${reply}</div>`;
-      termBody.scrollTop = termBody.scrollHeight;
+      const responses = {
+        projects: "→ [01] Threat Intel Engine  [02] ScholarSync ORM  [03] Godot Neural NPCs",
+        style: "→ Prompt: Bento + Dark Mode (CSS grid with span, dark surfaces)",
+        xray: "→ Toggled CSS Grid Span X-Ray Blueprint overlay.",
+        matrix: "→ Cycled dark-mode surface accent theme.",
+        help: "→ Commands: projects, style, xray, matrix, clear"
+      };
+      const out = responses[c] || `Unknown command '${c}'. Try: projects, style, xray, clear`;
+      termLog.innerHTML += `<div><span style="color:var(--accent-2)">❯ ${c}</span> ${out}</div>`;
+      termLog.scrollTop = termLog.scrollHeight;
     }
 
     termInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
-        runTerminalCmd(termInput.value);
+        execTerm(termInput.value);
         termInput.value = '';
       }
     });
 
-    // 6. Web Audio API Ambient Synth Pad
-    let audioCtx;
-    function playChord(freqs, padEl) {
-      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      padEl.classList.add('playing');
-      setTimeout(() => padEl.classList.remove('playing'), 500);
+    // 5. PROJECT TABS
+    const projData = [
+      {
+        title: "Multi-Format Threat Intelligence Engine",
+        desc: "Transforms raw cybersecurity feeds into structured multi-format intelligence reports.",
+        tag: "SIH Build"
+      },
+      {
+        title: "ScholarSync // TypeScript + Drizzle ORM",
+        desc: "High-speed scholarship ingestion pipeline backed by PostgreSQL & automated migrations.",
+        tag: "PostgreSQL"
+      },
+      {
+        title: "Godot 4 Neural NPC Dialogue System",
+        desc: "Real-time generative LLM character conversations embedded inside a Godot game loop.",
+        tag: "Godot + AI"
+      }
+    ];
 
-      freqs.forEach(f => {
+    function selectProj(i, btn) {
+      document.querySelectorAll('.proj-pill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const p = projData[i];
+      document.getElementById('projDisplay').innerHTML = `
+        <div>
+          <h3>${p.title}</h3>
+          <p>${p.desc}</p>
+        </div>
+        <span class="badge-mono">${p.tag}</span>
+      `;
+    }
+
+    // 6. WEBAUDIO SYNTH & AUTO-LOOP SEQUENCER
+    let audioCtx;
+    let loopTimer = null;
+    let stepIndex = 0;
+    const chordBank = [
+      [261.63, 329.63, 392.00, 493.88, 587.33], // Cmaj9
+      [220.00, 261.63, 329.63, 392.00, 493.88], // Am11
+      [174.61, 220.00, 261.63, 329.63, 392.00], // Fmaj9
+      [196.00, 246.94, 293.66, 349.23, 440.00]  // G13
+    ];
+
+    function triggerChord(idx, el) {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const btns = document.querySelectorAll('.chord-btn');
+      btns.forEach(b => b.classList.remove('active'));
+      if (el) el.classList.add('active');
+      else btns[idx].classList.add('active');
+
+      setTimeout(() => btns[idx].classList.remove('active'), 450);
+
+      // Animate visualizer bars
+      document.querySelectorAll('.seq-bar').forEach(bar => {
+        bar.style.height = `${25 + Math.random() * 75}%`;
+        setTimeout(() => { bar.style.height = '22%'; }, 420);
+      });
+
+      chordBank[idx].forEach((freq, i) => {
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(f, audioCtx.currentTime);
+        osc.type = i % 2 === 0 ? 'triangle' : 'sine';
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
 
-        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1.4);
+        gain.gain.setValueAtTime(0.055, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1.3);
 
         osc.connect(gain);
         gain.connect(audioCtx.destination);
         osc.start();
-        osc.stop(audioCtx.currentTime + 1.4);
+        osc.stop(audioCtx.currentTime + 1.3);
       });
     }
 
-    // 7. Pulse Grid Accent Button
-    document.getElementById('shuffleGlowBtn').addEventListener('click', () => {
-      tiles.forEach((tile, i) => {
+    function toggleAutoLoop() {
+      const label = document.getElementById('loopToggle');
+      if (loopTimer) {
+        clearInterval(loopTimer);
+        loopTimer = null;
+        label.textContent = '▶ AUTO-LOOP';
+        label.style.color = 'var(--accent-2)';
+      } else {
+        triggerChord(stepIndex % 4);
+        loopTimer = setInterval(() => {
+          stepIndex++;
+          triggerChord(stepIndex % 4);
+        }, 1250);
+        label.textContent = '■ STOP LOOP';
+        label.style.color = 'var(--accent-3)';
+      }
+    }
+
+    // 7. TOPBAR CONTROLS & SHORTCUTS
+    function toggleXray() {
+      document.body.classList.toggle('xray-active');
+      document.getElementById('xrayBtn').classList.toggle('active');
+    }
+
+    function morphGrid() {
+      const grid = document.getElementById('bentoGrid');
+      grid.classList.toggle('layout-cinema');
+      document.getElementById('morphBtn').classList.toggle('active');
+    }
+
+    const themes = ['default', 'cyber', 'emerald', 'solar'];
+    let tIdx = 0;
+    function cycleTheme() {
+      tIdx = (tIdx + 1) % themes.length;
+      document.body.setAttribute('data-theme', themes[tIdx]);
+    }
+
+    function triggerShockwave() {
+      tiles.forEach((t, i) => {
         setTimeout(() => {
-          tile.style.borderColor = '#ee9382';
-          setTimeout(() => tile.style.borderColor = '', 450);
-        }, i * 70);
+          t.style.transform = 'scale(0.97)';
+          setTimeout(() => { t.style.transform = ''; }, 220);
+        }, i * 55);
       });
+    }
+
+    function toggleCmdModal() {
+      document.getElementById('cmdBackdrop').classList.toggle('open');
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        toggleCmdModal();
+      } else if (e.key === 'Escape') {
+        document.getElementById('cmdBackdrop').classList.remove('open');
+      } else if (e.key.toLowerCase() === 'x' && document.activeElement !== termInput) {
+        toggleXray();
+      }
     });
   </script>
 </body>
